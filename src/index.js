@@ -1,17 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { render } from 'react-dom';
+import { HashRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
 import './css/index.css';
-import Main from './App';
+import App from './components/App';
 
 
-const App = () => (
-  <MuiThemeProvider>
-    <Main />
-  </MuiThemeProvider>
+const Root = () => (
+  <HashRouter>
+    <App />
+  </HashRouter>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+render(<Root />, document.getElementById('root'));
 registerServiceWorker();
