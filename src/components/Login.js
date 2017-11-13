@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import '../css/Login.css';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -10,7 +10,7 @@ class Login extends Component {
   render() {
     return (
       <Card className='card'>
-        <CardHeader title="Secret Santa Login"/>
+        <CardTitle title="Rooke Secret Santa" />
         <CardText>
           <TextField floatingLabelText="Email" fullWidth={true} />
           <br />
@@ -18,6 +18,9 @@ class Login extends Component {
         </CardText>
         <CardActions className="action-container">
           <RaisedButton label="Login" primary={true} className='login-button' />
+          <br />
+          <FlatButton label="Activate Account" className='activate-button' />
+          <br />
           <FlatButton label="Forgot Password" className='forgot-button' />
         </CardActions>
       </Card>
