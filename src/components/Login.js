@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import '../css/Login.css';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-class Login extends Component {
+class Login extends React.Component {
 
   login(e) {
     e.preventDefault();
-    console.log('login clicked');
+    //if authenticate
+    //set in the state and navigate
+    this.props.history.push('/');
   }
 
   render() {
@@ -50,4 +52,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
