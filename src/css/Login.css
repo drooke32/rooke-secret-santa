@@ -1,0 +1,15 @@
+.login-button {
+    float: right;
+}
+
+.forgot-button {
+    float: left;
+}
+
+.action-container {
+    min-height: 46px;
+}
+
+.card {
+    margin-top: 40px;
+  }
