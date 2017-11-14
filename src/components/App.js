@@ -3,7 +3,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import '../css/App.css';
 import base from '../base';
-import samplePeople from '../people';
 
 import Lists from './Lists';
 import Login from './Login';
@@ -49,8 +48,6 @@ class App extends Component {
   constructor() {
     super();
 
-    this.loadPeople = this.loadPeople.bind(this);
-
     this.state = {
       people: {},
     };
@@ -68,22 +65,12 @@ class App extends Component {
     base.removeBinding(this.ref);
   }
 
-  loadPeople() {
-    console.log('loaded People');
-    console.log(this);
-    console.log(samplePeople);
-    this.setState({
-      people: samplePeople
-    });
-  }
-
-
   render() {
     return (
       <MuiThemeProvider>
         <div>
           <Switch>
-            <PropsRoute path="/login" component={Login} loadPeople={this.loadPeople}/>
+            <PropsRoute path="/login" component={Login}/>
             <PrivateRoute exact path="/" component={Lists}/>
             <PrivateRoute path="/lists" component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>

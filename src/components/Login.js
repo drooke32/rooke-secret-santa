@@ -30,8 +30,7 @@ class Login extends React.Component {
             label="Login"
             primary={true}
             className='login-button'
-            //onClick={(e) => this.login(e)}
-            onClick={this.props.loadPeople}
+            onClick={(e) => this.login(e)}
           />
           <br />
           <Link to="/activate">
