@@ -26,28 +26,33 @@ class ActivateAccount extends React.Component {
 
   activate(e) {
     e.preventDefault();
+
+    const person = {
+      name: this.name.value,
+      email: this.email.value,
+      password: this.password.value,
+    }
+
+    console.log(person);
     //if account not activated
     //and activation succeeds
     //set in the state and navigate
     this.props.history.push('/');
   }
 
-  changeName = (event, index, value) => {
-    this.setState({value});
-  };
   render() {
     return (
       <Card className='card'>
         <CardTitle title="Activate Account" />
         <CardText>
-          <SelectField onChange={this.changeName} floatingLabelText="Name" fullWidth={true} maxHeight={200}>
+          <SelectField ref={(input) => this.name = input} floatingLabelText="Name" fullWidth={true} maxHeight={200}>
             {items}
           </SelectField>
-          <TextField floatingLabelText="Email" fullWidth={true} />
+          <TextField ref={(input) => this.email = input} floatingLabelText="Email" fullWidth={true} />
           <br />
-          <TextField floatingLabelText="Password" type="password" fullWidth={true} />
+          <TextField ref={(input) => this.password = input} floatingLabelText="Password" type="password" fullWidth={true} />
           <br />
-          <TextField floatingLabelText="Confirm Password" type="password" fullWidth={true} />
+          <TextField ref={(input) => this.passsword2 = input} floatingLabelText="Confirm Password" type="password" fullWidth={true} />
         </CardText>
         <CardActions className="action-container">
           <RaisedButton 

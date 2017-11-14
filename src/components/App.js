@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import '../css/App.css';
+import base from '../base';
+import samplePeople from '../people';
 
 import Lists from './Lists';
 import Login from './Login';
@@ -27,18 +29,66 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   )}/>
 )
 
+const renderMergedProps = (component, ...rest) => {
+  const finalProps = Object.assign({}, ...rest);
+  return (
+    React.createElement(component, finalProps)
+  );
+}
+
+const PropsRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return renderMergedProps(component, routeProps, rest);
+    }}/>
+  );
+}
+
 class App extends Component {
+
+  constructor() {
+    super();
+
+    this.loadPeople = this.loadPeople.bind(this);
+
+    this.state = {
+      people: {},
+    };
+  }
+
+  componentWillMount() {
+    //this runs right before teh app is rendered
+    this.ref = base.syncState('people', {
+      context: this,
+      state: 'people'
+    });
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
+  }
+
+  loadPeople() {
+    console.log('loaded People');
+    console.log(this);
+    console.log(samplePeople);
+    this.setState({
+      people: samplePeople
+    });
+  }
+
+
   render() {
     return (
       <MuiThemeProvider>
         <div>
           <Switch>
-            <Route path="/login" component={Login}/>
+            <PropsRoute path="/login" component={Login} loadPeople={this.loadPeople}/>
             <PrivateRoute exact path="/" component={Lists}/>
             <PrivateRoute path="/lists" component={Lists}/>
-            <Route path="/forgot-password" component={ForgotPassword}/>
-            <Route path="/change-password" component={ChangePassword}/>
-            <Route path="/activate" component={ActivateAccount}/>
+            <PropsRoute path="/forgot-password" component={ForgotPassword}/>
+            <PropsRoute path="/change-password" component={ChangePassword}/>
+            <PropsRoute path="/activate" component={ActivateAccount}/>
             <Route component={NotFound}/>
           </Switch>
         </div>

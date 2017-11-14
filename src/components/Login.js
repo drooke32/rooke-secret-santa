@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import '../css/Login.css';
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -30,7 +30,8 @@ class Login extends React.Component {
             label="Login"
             primary={true}
             className='login-button'
-            onClick={(e) => this.login(e)}
+            //onClick={(e) => this.login(e)}
+            onClick={this.props.loadPeople}
           />
           <br />
           <Link to="/activate">
