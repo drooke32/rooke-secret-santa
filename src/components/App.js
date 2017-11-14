@@ -15,18 +15,20 @@ const auth = {
   isAuthenticated: false
 }
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={props => (
-    auth.isAuthenticated 
-    ? ( <Component {...props}/> ) 
-    : (
-      <Redirect to={{
-        pathname: '/login',
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
-)
+const PrivateRoute = ({ component, redirectTo, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return auth.isAuthenticated 
+      ? ( renderMergedProps(component, routeProps, rest) ) 
+      : (
+        <Redirect to={{
+          pathname: redirectTo,
+          state: { from: routeProps.location }
+        }}/>
+      );
+    }}/>
+  );
+}
 
 const renderMergedProps = (component, ...rest) => {
   const finalProps = Object.assign({}, ...rest);
@@ -71,8 +73,8 @@ class App extends Component {
         <div>
           <Switch>
             <PropsRoute path="/login" component={Login}/>
-            <PrivateRoute exact path="/" component={Lists}/>
-            <PrivateRoute path="/lists" component={Lists}/>
+            <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
+            <PrivateRoute path="/lists" redirectTo="/login" component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PropsRoute path="/change-password" component={ChangePassword}/>
             <PropsRoute path="/activate" component={ActivateAccount}/>
