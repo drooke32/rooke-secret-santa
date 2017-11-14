@@ -12,8 +12,6 @@ class Login extends React.Component {
   login(e) {
     e.preventDefault();
     //if authenticate
-    //set in the state and navigate
-    this.props.history.push('/');
   }
 
   render() {

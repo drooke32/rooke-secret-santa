@@ -161,12 +161,7 @@ class ActivateAccount extends React.Component {
       password: this.state.password,
     }
 
-    console.log(person);
-return;
-    //if account not activated
-    //and activation succeeds
-    //set in the state and navigate
-    this.props.history.push('/');
+    this.props.activateUser(person);
   }
 
   render() {
