@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import Header from '../layout/Header';
 
 class ChangePassword extends Component {
   render() {
     return (
-      <h1> The ChangePassword Page! </h1>
+      <div>
+        <Header title="Change Password"/>
+      </div>
     );
   }
 }

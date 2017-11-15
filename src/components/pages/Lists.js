@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import Header from '../layout/Header';
 
 class Lists extends Component {
   render() {
     return (
-      <h1> The Lists Page! </h1>
+      <div>
+        <Header title="Lists" />
+      </div>
     );
   }
 }
