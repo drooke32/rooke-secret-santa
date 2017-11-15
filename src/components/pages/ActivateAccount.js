@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import { auth } from '../base';
+import { auth } from '../../helpers/base';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';

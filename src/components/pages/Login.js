@@ -1,8 +1,8 @@
 import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import '../css/Login.css';
+import '../../css/Login.css';
 import { Link, withRouter } from 'react-router-dom';
-import { auth } from '../base';
+import { auth } from '../../helpers/base';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';

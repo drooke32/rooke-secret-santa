@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import '../css/App.css';
-import { base, auth, storageKey, isAuthenticated } from '../base';
+import { base, auth, storageKey, isAuthenticated } from '../helpers/base';
 
-import Lists from './Lists';
-import Login from './Login';
-import ForgotPassword from './ForgotPassword';
-import ChangePassword from './ChangePassword';
-import ActivateAccount from './ActivateAccount';
-import NotFound from './NotFound';
+import Lists from './pages/Lists';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ChangePassword from './pages/ChangePassword';
+import ActivateAccount from './pages/ActivateAccount';
+import NotFound from './pages/NotFound';
 
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
   return (
