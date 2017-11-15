@@ -7,7 +7,11 @@ const app = firebase.initializeApp({
   databaseURL: "https://rooke-secret-santa.firebaseio.com",
 });
 
-const base = Rebase.createClass(app.database());
+export const base = Rebase.createClass(app.database());
 
-const auth = app.auth();
-export { base, auth };
+export const auth = app.auth();
+export const storageKey = 'rooke-secret-santa-auth';
+
+export const isAuthenticated = () => {
+  return !!auth.currentUser || !!localStorage.getItem(storageKey);
+}

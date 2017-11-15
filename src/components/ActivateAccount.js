@@ -155,13 +155,15 @@ class ActivateAccount extends React.Component {
       return;
     }
 
-    const person = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-    }
+    auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then(function() {
+      this.props.history.push('/');
+    })
+    .catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    });
 
-    this.props.activateUser(person);
   }
 
   render() {

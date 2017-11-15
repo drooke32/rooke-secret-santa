@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import '../css/Login.css';
 import { Link, withRouter } from 'react-router-dom';
+import { auth } from '../base';
 
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,7 +12,9 @@ class Login extends React.Component {
 
   login(e) {
     e.preventDefault();
-    //if authenticate
+    auth.signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+      this.setState({redirectToReferrer: true});
+    });
   }
 
   render() {

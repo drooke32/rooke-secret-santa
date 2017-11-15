@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import '../css/App.css';
-import { base, auth } from '../base';
+import { base, auth, storageKey, isAuthenticated } from '../base';
 
 import Lists from './Lists';
 import Login from './Login';
@@ -12,11 +12,9 @@ import ActivateAccount from './ActivateAccount';
 import NotFound from './NotFound';
 
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
-  console.log(auth);
-  console.log(auth.currentUser);
   return (
     <Route {...rest} render={routeProps => {
-      return auth.currentUser
+      return isAuthenticated
       ? ( renderMergedProps(component, routeProps, rest) ) 
       : (
         <Redirect to={{
@@ -63,22 +61,20 @@ class App extends Component {
     });
   }
 
+  componentDidMount() {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        window.localStorage.setItem(storageKey, user.uid);
+        this.setState({user: user.uid});
+      } else {
+        window.localStorage.removeItem(storageKey);
+        this.setState({user: null});
+      }
+    });
+  }
+
   componentWillUnmount() {
     base.removeBinding(this.ref);
-  }
-
-  login(user) {
-    //set in the state and navigate
-    this.props.history.push('/');
-  }
-
-  activate(user) {
-    //set in the state and navigate
-    auth.createUserWithEmailAndPassword(user.email, user.password).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-    });
-    this.history.push('/');
   }
 
   render() {
@@ -86,12 +82,12 @@ class App extends Component {
       <MuiThemeProvider>
         <div>
           <Switch>
-            <PropsRoute path="/login" component={Login} loginUser={this.login} />
+            <PropsRoute path="/login" component={Login} />
             <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
             <PrivateRoute path="/lists" redirectTo="/login" component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PropsRoute path="/change-password" component={ChangePassword}/>
-            <PropsRoute path="/activate" component={ActivateAccount} activateUser={this.activate} />
+            <PropsRoute path="/activate" component={ActivateAccount} />
             <Route component={NotFound}/>
           </Switch>
         </div>
