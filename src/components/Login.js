@@ -10,10 +10,28 @@ import TextField from 'material-ui/TextField';
 
 class Login extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
   login(e) {
     e.preventDefault();
-    auth.signInWithEmailAndPassword(this.state.email, this.state.password).then(() => {
-      this.setState({redirectToReferrer: true});
+    auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+    .then(() => {
+      this.props.history.push('/');
+    }, (error) => {
+      //login failed, check error and inform the user
     });
   }
 
@@ -22,9 +40,20 @@ class Login extends React.Component {
       <Card className='card'>
         <CardTitle title="Rooke Secret Santa" />
         <CardText>
-          <TextField floatingLabelText="Email" fullWidth={true} />
+          <TextField 
+            floatingLabelText="Email" 
+            fullWidth={true}
+            onChange={this.handleChange}
+            value={this.state.email}
+          />
           <br />
-          <TextField floatingLabelText="Password" type="password" fullWidth={true} />
+          <TextField 
+            floatingLabelText="Password"
+            type="password"
+            fullWidth={true}
+            onChange={this.handleChange}
+            value={this.state.email}
+          />
         </CardText>
         <CardActions className="action-container">
           <RaisedButton 

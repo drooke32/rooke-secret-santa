@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom'
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
+import { auth } from '../base';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -156,14 +157,12 @@ class ActivateAccount extends React.Component {
     }
 
     auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then(function() {
+    .then(() => {
       this.props.history.push('/');
-    })
-    .catch(function(error) {
+    }, (error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
     });
-
   }
 
   render() {
