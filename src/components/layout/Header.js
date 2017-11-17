@@ -1,6 +1,6 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'
 import { auth } from '../../helpers/base';
+import { withRouter } from 'react-router-dom'; 
 
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
@@ -13,29 +13,54 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.navigateToPerson = this.navigateToPerson.bind(this);
+    this.navigateToAll = this.navigateToAll.bind(this);
+    this.navigateToMine = this.navigateToMine.bind(this);
+    this.navigateChangePassword = this.navigateChangePassword.bind(this);
+    this.signOut = this.signOut.bind(this);
+
     this.state = {open: false};
   }
 
-  navigate = (e) => {
-    console.log(e.target.value);
-    console.log(e);
-    this.props.history.push(e.target.value);
+  navigateToPerson() {
+    this.navigate('person');
   }
 
-  signOut(e) {
-    e.preventDefault();
+  navigateToAll() {
+    this.navigate(false);
+  }
+
+  navigateToMine() {
+    this.navigate('mine');
+  }
+
+  navigateChangePassword() {
+    this.props.history.push('/change-password');
+  }
+
+  signOut() {
     auth.signOut().then(() => {
+      console.log(this);
       this.props.history.push('/login');
-    }, () => {
-      //error occured
     });
+  }
+
+  navigate(location) {
+    if (location === 'mine') {
+      this.props.history.push(`/lists/${this.props.user}`);
+    } else if (location === 'person') {
+      this.props.history.push(`/lists/${this.props.person}`);
+    } else {
+      this.props.history.push('/lists');
+    }
   }
 
   render() {
     return (
       <div>
         <AppBar
-          title={this.props.title}
+          title={`Rooke Secret Santa`}
           showMenuIconButton={false}
           iconElementRight={
             <IconMenu
@@ -46,24 +71,20 @@ class Header extends React.Component {
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
               <MenuItem
-                value="/lists/denis"
-                onClick={this.navigate}
+                onClick={this.navigatePerson}
                 primaryText="My Person" 
               />
               <MenuItem 
-                value="/lists/aaron"
-                onClick={this.navigate}
+                onClick={this.navigateMine}
                 primaryText="My List"
               />
               <MenuItem 
-                value="/lists"
-                onClick={this.navigate}
+                onClick={this.navigateAll}
                 primaryText="All Lists"
               />
               <Divider />
               <MenuItem 
-                value="/change-password"
-                onClick={this.navigate}
+                onClick={this.navigateChangePassword}
                 primaryText="Change Password"
               />
               <MenuItem onClick={this.signOut} primaryText="Sign out" />

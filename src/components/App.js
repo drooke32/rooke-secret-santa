@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
 import ActivateAccount from './pages/ActivateAccount';
 import NotFound from './pages/NotFound';
+import Header from './layout/Header';
 
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
   return (
@@ -81,12 +82,13 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
+          <Header user={this.state.user} person={this.state.person} />
           <Switch>
             <PropsRoute path="/login" component={Login} />
             <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
             <PrivateRoute path="/lists" redirectTo="/login" component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
-            <PropsRoute path="/change-password" component={ChangePassword}/>
+            <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
             <PropsRoute path="/activate" component={ActivateAccount} />
             <Route component={NotFound}/>
           </Switch>
