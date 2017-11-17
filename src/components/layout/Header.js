@@ -1,5 +1,5 @@
 import React from 'react';
-import { auth } from '../../helpers/base';
+import { auth, isAuthenticated } from '../../helpers/base';
 import { withRouter } from 'react-router-dom'; 
 
 import AppBar from 'material-ui/AppBar';
@@ -8,6 +8,7 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/svg-icons/navigation/menu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 
 class Header extends React.Component {
 
@@ -41,7 +42,6 @@ class Header extends React.Component {
 
   signOut() {
     auth.signOut().then(() => {
-      console.log(this);
       this.props.history.push('/login');
     });
   }
@@ -63,6 +63,7 @@ class Header extends React.Component {
           title={`Rooke Secret Santa`}
           showMenuIconButton={false}
           iconElementRight={
+            isAuthenticated ?
             <IconMenu
               iconButtonElement={
                 <IconButton><Menu /></IconButton>
@@ -89,6 +90,8 @@ class Header extends React.Component {
               />
               <MenuItem onClick={this.signOut} primaryText="Sign out" />
             </IconMenu>
+            :
+            <FlatButton label="Login" />
           }
         />
       </div>
