@@ -9,28 +9,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 class Login extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: '',
-      password: '',
-    };
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
   login(e) {
     e.preventDefault();
-    auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+    auth.signInWithEmailAndPassword(this.email.input.value, this.password.input.value)
     .then(() => {
+      //HANDLE GRABBING THE LOGGED IN PERSON
       this.props.history.push('/');
     }, (error) => {
+      //HANDLE ERROR ON LOGIN
       //login failed, check error and inform the user
     });
   }
@@ -41,18 +27,16 @@ class Login extends React.Component {
         <CardTitle title="Rooke Secret Santa" />
         <CardText>
           <TextField 
+            ref={(input) => this.email = input}
             floatingLabelText="Email" 
             fullWidth={true}
-            onChange={this.handleChange}
-            value={this.state.email}
           />
           <br />
           <TextField 
+            ref={(input) => this.password = input}
             floatingLabelText="Password"
             type="password"
             fullWidth={true}
-            onChange={this.handleChange}
-            value={this.state.email}
           />
         </CardText>
         <CardActions className="action-container">

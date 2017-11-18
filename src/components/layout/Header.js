@@ -1,5 +1,4 @@
 import React from 'react';
-import { auth, isAuthenticated } from '../../helpers/base';
 import { withRouter } from 'react-router-dom'; 
 
 import AppBar from 'material-ui/AppBar';
@@ -25,15 +24,15 @@ class Header extends React.Component {
   }
 
   navigateToPerson() {
-    this.navigate('person');
+    this.props.history.push(`/lists/aaron`);
   }
 
   navigateToAll() {
-    this.navigate(false);
+    this.props.history.push('/lists');
   }
 
   navigateToMine() {
-    this.navigate('mine');
+    this.props.history.push(`/lists/${this.props.user}`);
   }
 
   navigateChangePassword() {
@@ -41,19 +40,9 @@ class Header extends React.Component {
   }
 
   signOut() {
-    auth.signOut().then(() => {
+    this.props.auth.signOut().then(() => {
       this.props.history.push('/login');
     });
-  }
-
-  navigate(location) {
-    if (location === 'mine') {
-      this.props.history.push(`/lists/${this.props.user}`);
-    } else if (location === 'person') {
-      this.props.history.push(`/lists/${this.props.person}`);
-    } else {
-      this.props.history.push('/lists');
-    }
   }
 
   render() {
@@ -63,7 +52,7 @@ class Header extends React.Component {
           title={`Rooke Secret Santa`}
           showMenuIconButton={false}
           iconElementRight={
-            isAuthenticated ?
+            this.props.isAuthenticated() ?
             <IconMenu
               iconButtonElement={
                 <IconButton><Menu /></IconButton>
@@ -72,15 +61,15 @@ class Header extends React.Component {
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
               <MenuItem
-                onClick={this.navigatePerson}
+                onClick={this.navigateToPerson}
                 primaryText="My Person" 
               />
               <MenuItem 
-                onClick={this.navigateMine}
+                onClick={this.navigateToMine}
                 primaryText="My List"
               />
               <MenuItem 
-                onClick={this.navigateAll}
+                onClick={this.navigateToAll}
                 primaryText="All Lists"
               />
               <Divider />
@@ -90,8 +79,7 @@ class Header extends React.Component {
               />
               <MenuItem onClick={this.signOut} primaryText="Sign out" />
             </IconMenu>
-            :
-            <FlatButton label="Login" />
+            : <FlatButton label="Login" />
           }
         />
       </div>

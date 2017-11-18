@@ -82,7 +82,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Header user={this.state.user} person={this.state.person} />
+          <Header user={this.state.user} person={this.state.person} auth={auth} isAuthenticated={isAuthenticated}/>
           <Switch>
             <PropsRoute path="/login" component={Login} />
             <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
