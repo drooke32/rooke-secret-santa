@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
 import ActivateAccount from './pages/ActivateAccount';
 import NotFound from './pages/NotFound';
+import Match from './pages/Match';
 import Header from './layout/Header';
 
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
@@ -66,6 +67,9 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         window.localStorage.setItem(storageKey, user.uid);
+
+        //use the user.uid to get the proper person out of state
+        //be sure to decrypt their person
         this.setState({user: user.uid});
       } else {
         window.localStorage.removeItem(storageKey);
@@ -82,7 +86,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Header user={this.state.user} person={this.state.person} auth={auth} isAuthenticated={isAuthenticated}/>
+          <Header user={this.state.user} auth={auth} isAuthenticated={isAuthenticated}/>
           <Switch>
             <PropsRoute path="/login" component={Login} />
             <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
@@ -90,6 +94,7 @@ class App extends Component {
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
             <PropsRoute path="/activate" component={ActivateAccount} />
+            <PropsRoute path="/match" component={Match} />
             <Route component={NotFound}/>
           </Switch>
         </div>
