@@ -60,7 +60,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    //this runs right before teh app is rendered
     this.ref = base.syncState('people', {
       context: this,
       state: 'people'
@@ -85,8 +84,10 @@ class App extends Component {
 
   setCurrentUserInState(uid) {
     const user = this.state.people[uid];
-    const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
-    this.setState({user: user['owner'], person});
+    if (user) {
+      const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
+      this.setState({user: user['owner'], person});
+    }
   }
 
   saveMatches(people) {
@@ -94,18 +95,22 @@ class App extends Component {
   }
 
   activateUser(name, uid) {
-
+    const people = {...this.state.people};
+    people[uid] = people[name];
+    people[name] = null;
+    this.setState({ people });
+    this.setCurrentUserInState(uid);
   }
 
   render() {
     return (
       <MuiThemeProvider>
         <div>
-          <Header user={this.state.user} auth={auth} isAuthenticated={isAuthenticated}/>
+          <Header user={this.state.user} person={this.state.person} auth={auth} isAuthenticated={isAuthenticated}/>
           <Switch>
             <PropsRoute path="/login" component={Login} />
-            <PrivateRoute exact path="/" redirectTo="/login" component={Lists}/>
-            <PrivateRoute path="/lists" redirectTo="/login" component={Lists}/>
+            <PrivateRoute exact path="/" redirectTo="/login" user={this.state.user} person={this.state.person} component={Lists}/>
+            <PrivateRoute path="/lists" redirectTo="/login" user={this.state.user} person={this.state.person} component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
             <PropsRoute path="/activate" component={ActivateAccount} activateUser={this.activateUser} />

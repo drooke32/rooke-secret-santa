@@ -24,7 +24,7 @@ class Header extends React.Component {
   }
 
   navigateToPerson() {
-    this.props.history.push(`/lists/${this.props.user.person}`);
+    this.props.history.push(`/lists/${this.props.person}`);
   }
 
   navigateToAll() {
@@ -32,7 +32,7 @@ class Header extends React.Component {
   }
 
   navigateToMine() {
-    this.props.history.push(`/lists/${this.props.user.name}`);
+    this.props.history.push(`/lists/${this.props.user}`);
   }
 
   navigateChangePassword() {

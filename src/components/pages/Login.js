@@ -1,12 +1,11 @@
 import React from 'react';
-import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import '../../css/Login.css';
-import { Link, withRouter } from 'react-router-dom';
 import { auth } from '../../helpers/base';
+import { Link, withRouter } from 'react-router-dom';
 
+import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 
 class Login extends React.Component {
   login(e) {
@@ -39,11 +38,11 @@ class Login extends React.Component {
             fullWidth={true}
           />
         </CardText>
-        <CardActions className="action-container">
+        <CardActions className="login-action-container">
           <RaisedButton 
             label="Login"
             primary={true}
-            className='login-button'
+            className='bottom-button'
             onClick={(e) => this.login(e)}
           />
           <br />

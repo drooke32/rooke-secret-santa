@@ -41,6 +41,8 @@ class ActivateAccount extends React.Component {
         passwordValid: false,
         confirmError: '',
         confirmValid: false,
+        activateError: false,
+        activateErrorMessage: '',
       },
     };
   }
@@ -148,9 +150,43 @@ class ActivateAccount extends React.Component {
 
   }
 
+  setActivateValidation(error, message) {
+    const formValidation = {...this.state.formValidation};
+    formValidation['activateError'] = error;
+    formValidation['activateErrorMessage'] = message;
+
+    this.setState({ formValidation });
+  }
+
+  getErrorMessage(code) {
+    let message = '';
+    switch (code) {
+      case 'auth/email-already-in-use':
+        message = "The email you supplied is already in use.";
+        break;
+      case 'auth/invalid-email':
+        message = "The email you supplied is invalid.";
+        break;
+      case 'auth/weak-password':
+        message = "The supplied password is weak, try something more complex."
+        break;
+      default:
+        message = "An unknown error occurred";
+        break;
+    }
+
+    return message;
+  }
+
+  handleActivationError(error) {
+    const message = this.getErrorMessage(error.code);
+    this.setActivateValidation(true, message);
+  }
+
   activate(e) {
     e.preventDefault();
 
+    this.setActivateValidation(false, '');
     if (!this.validateForm()) {
       return;
     }
@@ -160,16 +196,19 @@ class ActivateAccount extends React.Component {
       this.props.activateUser(this.state.name, user.uid);
       this.props.history.push('/');
     }, (error) => {
-      //HANDLE ERROR ON ACTIVATE
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      this.handleActivationError(error);
     });
   }
 
   render() {
     return (
-      <Card className='card'>
-        <CardTitle title="Activate Account" />
+      <Card className='card' expanded={this.state.formValidation.activateError}>
+        <CardTitle title="Activate Account"/>
+        <CardText
+          expandable={true}
+        >
+          <p className="form-error">{this.state.formValidation.activateErrorMessage}</p>
+        </CardText>
         <CardText>
           <SelectField 
             ref={(input) => this.name = input}
@@ -219,7 +258,7 @@ class ActivateAccount extends React.Component {
           <RaisedButton 
             label="Activate"
             primary={true}
-            className='activate-button'
+            className='bottom-button'
             onClick={(e) => this.activate(e)}
           />
         </CardActions>
