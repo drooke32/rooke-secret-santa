@@ -8,22 +8,72 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 
 class Login extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formValidation: {
+        error: false,
+        message: '',
+      }
+    };
+  }
+
+  setFormValidation(error, message) {
+    const formValidation = {...this.state.formValidation};
+    formValidation['error'] = error;
+    formValidation['message'] = message;
+
+    this.setState({ formValidation });
+  }
+
+  getErrorMessage(code) {
+    let message = '';
+    switch (code) {
+      case 'auth/invalid-email':
+        message = "The email you supplied is invalid.";
+        break;
+      case 'auth/user-not-found':
+        message = "The supplied email is not associated with a user."
+        break;
+      case 'auth/wrong-password':
+        message = "The password you entered is incorrect";
+        break;
+      default:
+        message = "An unknown error occurred";
+        break;
+    }
+
+    return message;
+  }
+
+  handleLoginError(error) {
+    const message = this.getErrorMessage(error.code);
+    this.setFormValidation(true, message);
+  }
+
   login(e) {
     e.preventDefault();
+    this.setFormValidation(false, '');
+
     auth.signInWithEmailAndPassword(this.email.input.value, this.password.input.value)
     .then(() => {
-      //HANDLE GRABBING THE LOGGED IN PERSON
       this.props.history.push('/');
     }, (error) => {
-      //HANDLE ERROR ON LOGIN
-      //login failed, check error and inform the user
+      this.handleLoginError(error);
     });
   }
 
   render() {
     return (
-      <Card className='card'>
+      <Card className='card' expanded={this.state.formValidation.error}>
         <CardTitle title="Rooke Secret Santa" />
+        <CardText
+          expandable={true}
+        >
+          <p className="form-error">{this.state.formValidation.message}</p>
+        </CardText>
         <CardText>
           <TextField 
             ref={(input) => this.email = input}
