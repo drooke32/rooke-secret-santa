@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Switch, Route, Redirect } from 'react-router-dom'
 import '../css/App.css';
+import CryptoJS from 'crypto-js';
+import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { base, auth, storageKey, isAuthenticated } from '../helpers/base';
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
+import Match from './pages/Match';
+import Header from './layout/Header';
+import NotFound from './pages/NotFound';
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
 import ActivateAccount from './pages/ActivateAccount';
-import NotFound from './pages/NotFound';
-import Match from './pages/Match';
-import Header from './layout/Header';
 
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
   return (
@@ -49,6 +50,7 @@ class App extends Component {
     super();
 
     this.saveMatches = this.saveMatches.bind(this);
+    this.activateUser = this.activateUser.bind(this);
 
     this.state = {
       people: {},
@@ -69,13 +71,10 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         window.localStorage.setItem(storageKey, user.uid);
-
-        //use the user.uid to get the proper person out of state
-        //be sure to decrypt their person
-        this.setState({user: user.uid});
+        this.setCurrentUserInState(user.uid);
       } else {
         window.localStorage.removeItem(storageKey);
-        this.setState({user: null});
+        this.setState({user: null, person: null});
       }
     });
   }
@@ -84,8 +83,18 @@ class App extends Component {
     base.removeBinding(this.ref);
   }
 
+  setCurrentUserInState(uid) {
+    const user = this.state.people[uid];
+    const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
+    this.setState({user: user['owner'], person});
+  }
+
   saveMatches(people) {
     this.setState({people});
+  }
+
+  activateUser(name, uid) {
+
   }
 
   render() {
@@ -99,8 +108,11 @@ class App extends Component {
             <PrivateRoute path="/lists" redirectTo="/login" component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
-            <PropsRoute path="/activate" component={ActivateAccount} />
-            <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/>
+            <PropsRoute path="/activate" component={ActivateAccount} activateUser={this.activateUser} />
+            {/* 
+              Keep this commented out unless you need to match people again
+              <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
+            */}
             <Route component={NotFound}/>
           </Switch>
         </div>
