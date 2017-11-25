@@ -48,6 +48,8 @@ class App extends Component {
   constructor() {
     super();
 
+    this.saveMatches = this.saveMatches.bind(this);
+
     this.state = {
       people: {},
       user: {},
@@ -82,6 +84,10 @@ class App extends Component {
     base.removeBinding(this.ref);
   }
 
+  saveMatches(people) {
+    this.setState({people});
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -94,7 +100,7 @@ class App extends Component {
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
             <PropsRoute path="/activate" component={ActivateAccount} />
-            <PropsRoute path="/match" component={Match} />
+            <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/>
             <Route component={NotFound}/>
           </Switch>
         </div>

@@ -1,7 +1,9 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
 import { storageKey } from '../../helpers/base';
-import { Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardActions, CardTitle, CardText } from 'material-ui/Card';
+import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 
 const people = [
   'Aaron',
@@ -22,8 +24,9 @@ class Match extends React.Component {
 
   constructor(props) {
     super(props);
-    this.matchPeople();
-    console.log(this.matches);
+    this.state = {
+      match: "Match Incomplete"
+    };
   }
 
   matchPeople() {
@@ -35,7 +38,6 @@ class Match extends React.Component {
       notMatched = false;
       for (let i = 0, len = people.length; i < len; i++) {
         if (this.matchFailed(people[i], matched[i])) {
-          console.log('failed');
           notMatched = true;
         }
         result[people[i]] = matched[i];
@@ -45,7 +47,19 @@ class Match extends React.Component {
       }
     }
 
-    this.encryptMatches(result);
+    result = this.encryptMatches(result);
+    this.setMatches(result);
+    this.setState({
+      match: 'Match Complete'
+    });
+  }
+
+  setMatches(matches) {
+    let people = this.props.people;
+    Object.keys(people).map((person, index) => {
+      people[person]['person'] = matches[people[person]['owner']];
+    }); 
+    this.props.saveMatches(this.props.people);
   }
 
   shuffle(people) {
@@ -57,11 +71,10 @@ class Match extends React.Component {
   }
 
   encryptMatches(matches) {
-    for (let i = 0, len = matches.length; i < len; i++) {
-      matches[i] = CryptoJS.AES.encrypt(matches[i], storageKey);
-    }
-console.log(matches);
-    this.matches = matches;
+    people.forEach((person) => {
+      matches[person] = CryptoJS.AES.encrypt(matches[person], storageKey).toString();
+    });
+    return matches;
   }
 
   matchFailed(person, match) {
@@ -94,18 +107,19 @@ console.log(matches);
 
   render() {
     return (
-      <div>
-        <Table>
-          <TableBody>
-          {this.matches.map( (item, index) => (
-              <TableRow>
-                <TableRowColumn>{index}</TableRowColumn>
-                <TableRowColumn>{item}</TableRowColumn>
-              </TableRow>
-          ))}
-          </TableBody>
-        </Table>
-      </div>
+      <Card className='card'>
+        <CardText className="action-container">
+          <h1>{this.state.match}</h1>
+        </CardText>
+        <CardActions className="action-container">
+          <RaisedButton 
+            label="Match People"
+            primary={true}
+            className='login-button'
+            onClick={() => this.matchPeople()}
+          />
+        </CardActions>
+      </Card>
     )
   }
 }
