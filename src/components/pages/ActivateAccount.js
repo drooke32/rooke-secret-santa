@@ -202,7 +202,7 @@ class ActivateAccount extends React.Component {
 
   render() {
     return (
-      <Card className='card' expanded={this.state.formValidation.activateError}>
+      <Card className='container' expanded={this.state.formValidation.activateError}>
         <CardTitle title="Activate Account"/>
         <CardText
           expandable={true}

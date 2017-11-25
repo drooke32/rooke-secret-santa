@@ -1,4 +1,4 @@
-.card {
+.container {
   max-width: 570px;
   margin: 0 auto;
 }
@@ -22,4 +22,13 @@
 
 .form-error {
   color:rgb(244, 67, 54);
+}
+
+.list-header {
+  padding-bottom: .3em;
+  font-size: 1.5em;
+  font-weight: 500;
+  line-height: 1.334;
+  border-bottom: 1px solid #eee;
+  color: rgba(0,0,0,.87);
 }

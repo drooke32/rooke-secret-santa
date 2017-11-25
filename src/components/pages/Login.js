@@ -67,7 +67,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Card className='card' expanded={this.state.formValidation.error}>
+      <Card className='container' expanded={this.state.formValidation.error}>
         <CardTitle title="Rooke Secret Santa" />
         <CardText
           expandable={true}

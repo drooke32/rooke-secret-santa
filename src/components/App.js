@@ -109,7 +109,7 @@ class App extends Component {
           <Header user={this.state.user} person={this.state.person} auth={auth} isAuthenticated={isAuthenticated}/>
           <Switch>
             <PropsRoute path="/login" component={Login} />
-            <PrivateRoute exact path="/" redirectTo="/login" user={this.state.user} person={this.state.person} component={Lists}/>
+            <PrivateRoute exact path="/" redirectTo="/login" user={this.state.user} person={this.state.person} people={this.state.people} component={Lists}/>
             <PrivateRoute path="/lists" redirectTo="/login" user={this.state.user} person={this.state.person} component={Lists}/>
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>

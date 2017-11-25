@@ -116,7 +116,7 @@ class Match extends React.Component {
 
   render() {
     return (
-      <Card className='card'>
+      <Card className='container'>
         <CardText className="action-container">
           <h1>{this.state.match}</h1>
         </CardText>
