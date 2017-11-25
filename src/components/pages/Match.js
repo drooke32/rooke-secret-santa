@@ -30,6 +30,15 @@ class Match extends React.Component {
   }
 
   matchPeople() {
+    let matches = this.ensureValidMatches();
+    matches = this.encryptMatches(matches);
+    this.saveMatches(matches);
+    this.setState({
+      match: 'Match Complete'
+    });
+  }
+
+  ensureValidMatches() {
     let result = [];
     let notMatched = true;
 
@@ -47,19 +56,7 @@ class Match extends React.Component {
       }
     }
 
-    result = this.encryptMatches(result);
-    this.setMatches(result);
-    this.setState({
-      match: 'Match Complete'
-    });
-  }
-
-  setMatches(matches) {
-    let people = this.props.people;
-    Object.keys(people).map((person, index) => {
-      people[person]['person'] = matches[people[person]['owner']];
-    }); 
-    this.props.saveMatches(this.props.people);
+    return result;
   }
 
   shuffle(people) {
@@ -70,6 +67,15 @@ class Match extends React.Component {
       return people;
   }
 
+  saveMatches(matches) {
+    let people = this.props.people;
+    Object.keys(people).map((person, index) => {
+      //this array keying is gross, but not sure how to avoid it
+      people[person]['person'] = matches[people[person]['owner']];
+    }); 
+    this.props.saveMatches(this.props.people);
+  }
+
   encryptMatches(matches) {
     people.forEach((person) => {
       matches[person] = CryptoJS.AES.encrypt(matches[person], storageKey).toString();
@@ -78,10 +84,12 @@ class Match extends React.Component {
   }
 
   matchFailed(person, match) {
+    //obviously don't match people to themselves
     if (person === match) {
       return true;
     }
 
+    //requested that couples don't match with their partners
     if (person === 'Ben' && match === 'Christianne'
     || person === 'Christianne' && match === 'Ben') {
       return true;
