@@ -106,14 +106,42 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Header user={this.state.user} person={this.state.person} auth={auth} isAuthenticated={isAuthenticated}/>
+          <Header 
+            user={this.state.user}
+            person={this.state.person}
+            auth={auth}
+            isAuthenticated={isAuthenticated}
+          />
           <Switch>
             <PropsRoute path="/login" component={Login} />
-            <PrivateRoute exact path="/" redirectTo="/login" user={this.state.user} person={this.state.person} people={this.state.people} component={Lists}/>
-            <PrivateRoute path="/lists" redirectTo="/login" user={this.state.user} person={this.state.person} component={Lists}/>
+            <PrivateRoute
+              exact
+              path="/"
+              redirectTo="/login"
+              user={this.state.user}
+              person={this.state.person}
+              people={this.state.people}
+              component={Lists}
+            />
+            <PrivateRoute
+              path="/lists/:name?"
+              redirectTo="/login"
+              user={this.state.user}
+              person={this.state.person}
+              people={this.state.people}
+              component={Lists}
+            />
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
-            <PrivateRoute path="/change-password" redirectTo="/login" component={ChangePassword}/>
-            <PropsRoute path="/activate" component={ActivateAccount} activateUser={this.activateUser} />
+            <PrivateRoute 
+              path="/change-password"
+              redirectTo="/login"
+              component={ChangePassword}
+            />
+            <PropsRoute
+              path="/activate"
+              component={ActivateAccount}
+              activateUser={this.activateUser}
+            />
             {/* 
               Keep this commented out unless you need to match people again
               <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
