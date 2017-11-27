@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Lists extends Component {
+import AddItem from '../partials/AddItem';
+
+class Lists extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.addItem = this.addItem.bind(this);
 
     this.state = {
       list: [],
@@ -13,13 +17,15 @@ class Lists extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props == nextProps) {
+    if (this.props === nextProps) {
       return;
     }
 
     if (nextProps.match.params.name === nextProps.user ||
       nextProps.match.path === "/") {
       this.setState({isOwner: true});
+    } else {
+      this.setState({isOwner: false});
     }
     this.setTitle(nextProps);
   }
@@ -39,9 +45,18 @@ class Lists extends Component {
     this.setState({title});
   }
 
+  addItem(item) {
+    this.props.addItem(item);
+  } 
+
   render() {
     return (
       <div className="container">
+        { this.state.isOwner && 
+          <AddItem 
+            addItem={ this.addItem }
+          /> 
+        }
         <h2 className="list-header">{this.state.title}</h2>
       </div>
     );

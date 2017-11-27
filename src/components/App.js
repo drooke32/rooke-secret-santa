@@ -51,6 +51,7 @@ class App extends Component {
 
     this.saveMatches = this.saveMatches.bind(this);
     this.activateUser = this.activateUser.bind(this);
+    this.addItem = this.addItem.bind(this);
 
     this.state = {
       people: {},
@@ -111,6 +112,10 @@ class App extends Component {
     this.setCurrentUserInState(uid);
   }
 
+  addItem(item) {
+    console.log(item);
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -131,6 +136,7 @@ class App extends Component {
               person={this.state.person}
               people={this.state.people}
               component={Lists}
+              addItem={this.addItem}
             />
             <PrivateRoute
               path="/lists/:name?"
@@ -139,6 +145,7 @@ class App extends Component {
               person={this.state.person}
               people={this.state.people}
               component={Lists}
+              addItem={this.addItem}
             />
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute 
