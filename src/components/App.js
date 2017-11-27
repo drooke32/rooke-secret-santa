@@ -3,11 +3,11 @@ import CryptoJS from 'crypto-js';
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { base, auth, storageKey, isAuthenticated } from '../helpers/base';
+import { base, auth, storageKey, isAuthenticated} from '../helpers/base';
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
-import Match from './pages/Match';
+//import Match from './pages/Match';
 import Header from './layout/Header';
 import NotFound from './pages/NotFound';
 import ForgotPassword from './pages/ForgotPassword';
@@ -54,8 +54,8 @@ class App extends Component {
 
     this.state = {
       people: {},
-      user: {},
-      person: {},
+      user: '',
+      person: '',
     };
   }
 
@@ -67,10 +67,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        window.localStorage.setItem(storageKey, user.uid);
-        this.setCurrentUserInState(user.uid);
+    auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        window.localStorage.setItem(storageKey, authUser.uid);
+        const user = this.state.people[authUser.uid];
+        if (user) {
+          this.setCurrentUserInState(user);
+        }
       } else {
         window.localStorage.removeItem(storageKey);
         this.setState({user: null, person: null});
@@ -78,16 +81,22 @@ class App extends Component {
     });
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (Object.keys(this.state.people).length === 0 && nextState.people) {
+      const user = nextState.people[auth.currentUser.uid];
+      if (user) {
+        this.setCurrentUserInState(user);
+      }
+    }
+  }
+
   componentWillUnmount() {
     base.removeBinding(this.ref);
   }
 
-  setCurrentUserInState(uid) {
-    const user = this.state.people[uid];
-    if (user) {
-      const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
-      this.setState({user: user['owner'], person});
-    }
+  setCurrentUserInState(user) {
+    const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
+    this.setState({user: user['owner'], person});
   }
 
   saveMatches(people) {
