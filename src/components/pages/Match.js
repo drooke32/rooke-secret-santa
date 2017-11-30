@@ -1,6 +1,7 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
-import { storageKey } from '../../helpers/base';
+import seed from '../../helpers/people'; 
+import { base, storageKey } from '../../helpers/base';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Card, CardActions, CardText } from 'material-ui/Card';
 
@@ -23,9 +24,19 @@ class Match extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      match: "Match Incomplete"
+      match: "Match Incomplete",
+      seed: "Database Not Seeded",
     };
+  }
+
+  seedDatabase() {
+    base.post('people', {
+      data: seed
+    }).then(() => {
+      this.setState({seed: "Database Seeded"});
+    });
   }
 
   matchPeople() {
@@ -74,7 +85,7 @@ class Match extends React.Component {
       //once they activate their account
       people[person]['person'] = matches[people[person]['owner']];
     }); 
-    this.props.saveMatches(this.props.people);
+    this.props.saveMatches(people);
   }
 
   encryptMatches(matches) {
@@ -116,19 +127,34 @@ class Match extends React.Component {
 
   render() {
     return (
-      <Card className='container'>
-        <CardText className="action-container">
-          <h1>{this.state.match}</h1>
+      <div>
+        <Card className='container'>
+          <CardText className="login-action-container">
+            <h1>{this.state.match}</h1>
+          </CardText>
+          <CardActions className="action-container">
+            <RaisedButton 
+              label="Match People"
+              primary={true}
+              className='login-button'
+              onClick={() => this.matchPeople()}
+            />
+          </CardActions>
+        </Card>
+        <Card className='container'>
+        <CardText className="login-action-container">
+          <h1>{this.state.seed}</h1>
         </CardText>
         <CardActions className="action-container">
           <RaisedButton 
-            label="Match People"
+            label="Seed People"
             primary={true}
             className='login-button'
-            onClick={() => this.matchPeople()}
+            onClick={() => this.seedDatabase()}
           />
         </CardActions>
       </Card>
+      </div>
     )
   }
 }

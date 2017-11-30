@@ -1,16 +1,11 @@
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-
-const floatingButtonStyle = {
-  position: 'absolute',
-  bottom: '40px',
-  right: '40px',
-}
 
 class AddItem extends React.Component {
 
@@ -45,7 +40,7 @@ class AddItem extends React.Component {
         primary={true}
         onClick={this.closeModal}
       />,
-      <FlatButton
+      <RaisedButton
         label="Submit"
         primary={true}
         onClick={this.addItem}
@@ -53,9 +48,9 @@ class AddItem extends React.Component {
     ]
     return (
       <div>
-        <FloatingActionButton 
-          secondary={true} 
-          style={floatingButtonStyle}
+        <FloatingActionButton
+          className='add-button'
+          secondary={true}
           onClick={ this.clickAddButton }
         >
           <ContentAdd />
@@ -66,7 +61,19 @@ class AddItem extends React.Component {
           modal={true}
           open={this.state.open}
         >
-          FormFields go here
+          <TextField
+            floatingLabelText="Item"
+            fullWidth={true}
+          /><br />
+          <TextField
+            multiLine={true}
+            floatingLabelText="Description"
+            fullWidth={true}
+          /><br />
+          <TextField
+            floatingLabelText="Link"
+            fullWidth={true}
+          /><br />
         </Dialog>
       </div>
     )

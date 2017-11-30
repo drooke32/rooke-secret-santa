@@ -32,3 +32,9 @@
   border-bottom: 1px solid #eee;
   color: rgba(0,0,0,.87);
 }
+
+.add-button {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+}

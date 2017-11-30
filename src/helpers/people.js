@@ -1,56 +1,56 @@
 module.exports = {
   Aaron: {
-    owner: -1,
+    owner: 'Aaron',
     list: -1,
     person: -1,
   },
   Ben: {
-    owner: -1,
+    owner: 'Ben',
     list: -1,
     person: -1,
   },
   Christianne: {
-    owner: -1,
+    owner: 'Christianne',
     list: -1,
     person: -1,
   },
   Denis: {
-    owner: -1,
+    owner: 'Denis',
     list: -1,
     person: -1,
   },
   Greg: {
-    owner: -1,
+    owner: 'Greg',
     list: -1,
     person: -1,
   },
   Ian: {
-    owner: -1,
+    owner: 'Ian',
     list: -1,
     person: -1,
   },
   Julianne: {
-    owner: -1,
+    owner: 'Julianne',
     list: -1,
     person: -1,
   },
   Kirk: {
-    owner: -1,
+    owner: 'Kirk',
     list: -1,
     person: -1,
   },
   Mama: {
-    owner: -1,
+    owner: 'Mama',
     list: -1,
     person: -1,
   },
   Mel: {
-    owner: -1,
+    owner: 'Mel',
     list: -1,
     person: -1,
   },
   Papa: {
-    owner: -1,
+    owner: 'Papa',
     list: -1,
     person: -1,
   },

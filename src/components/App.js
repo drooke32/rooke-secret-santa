@@ -7,7 +7,7 @@ import { base, auth, storageKey, isAuthenticated} from '../helpers/base';
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
-//import Match from './pages/Match';
+import Match from './pages/Match';
 import Header from './layout/Header';
 import NotFound from './pages/NotFound';
 import ForgotPassword from './pages/ForgotPassword';
@@ -84,7 +84,7 @@ class App extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (Object.keys(this.state.people).length === 0 && nextState.people) {
-      const user = nextState.people[auth.currentUser.uid];
+      const user = auth.currentUser ? nextState.people[auth.currentUser.uid] : false;
       if (user) {
         this.setCurrentUserInState(user);
       }
@@ -160,8 +160,8 @@ class App extends Component {
             />
             {/* 
               Keep this commented out unless you need to match people again
-              <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
             */}
+            <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
             <Route component={NotFound}/>
           </Switch>
         </div>
