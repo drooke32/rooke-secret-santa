@@ -60,19 +60,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (auth.currentUser) {
-      base.fetch('people', {
-        context: this
-      }).then(people => {
-        const user = people[auth.currentUser.uid];
-        const data = {
-          'people' : people,
-          user,
-          'person' : CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8)
-        };
-        this.setState(data);
-      });
-    }
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        base.fetch('people', {
+          context: this
+        }).then(people => {
+          const user = people[auth.currentUser.uid];
+          const data = {
+            people,
+            user: user['owner'],
+            'person' : CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8)
+          };
+          this.setState(data);
+        });
+      }
+    });
   }
 
   activateUser(name, uid) {

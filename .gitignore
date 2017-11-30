@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+# creds
+/src/helpers/base.js
+
 # testing
 /coverage
 
