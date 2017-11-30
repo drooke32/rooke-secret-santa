@@ -1,7 +1,7 @@
 import '../css/App.css';
 import CryptoJS from 'crypto-js';
 import React, { Component } from 'react';
-import { base, auth, storageKey} from '../helpers/base';
+import { base, auth, encryptionKey} from '../helpers/base';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -69,7 +69,7 @@ class App extends Component {
           const data = {
             people,
             user: user['owner'],
-            'person' : CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8)
+            'person' : CryptoJS.AES.decrypt(user['person'], encryptionKey).toString(CryptoJS.enc.Utf8)
           };
           this.setState(data);
           this.props.history.push('/');

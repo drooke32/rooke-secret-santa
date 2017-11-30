@@ -1,7 +1,7 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
 import seed from '../../helpers/people'; 
-import { base, storageKey } from '../../helpers/base';
+import { base, encryptionKey } from '../../helpers/base';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Card, CardActions, CardText } from 'material-ui/Card';
 
@@ -95,7 +95,7 @@ class Match extends React.Component {
 
   encryptMatches(matches) {
     people.forEach((person) => {
-      matches[person] = CryptoJS.AES.encrypt(matches[person], storageKey).toString();
+      matches[person] = CryptoJS.AES.encrypt(matches[person], encryptionKey).toString();
     });
     return matches;
   }
