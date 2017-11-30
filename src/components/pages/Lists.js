@@ -16,18 +16,26 @@ class Lists extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.setIsOwner(this.props);
+    this.setTitle(this.props);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props === nextProps) {
       return;
     }
+    this.setIsOwner(nextProps);
+    this.setTitle(nextProps);
+  }
 
-    if (nextProps.match.params.name === nextProps.user ||
-      nextProps.match.path === "/") {
+  setIsOwner(props) {
+    if (props.match.params.name === props.user ||
+      props.match.path === "/") {
       this.setState({isOwner: true});
     } else {
       this.setState({isOwner: false});
     }
-    this.setTitle(nextProps);
   }
 
   setTitle(props) {

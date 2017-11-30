@@ -194,7 +194,7 @@ class ActivateAccount extends React.Component {
     auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then((user) => {
       this.props.activateUser(this.state.name, user.uid);
-      this.props.history.push('/');
+      //there is an observer on auth change that handles data fetching and redirecting
     }, (error) => {
       this.handleActivationError(error);
     });

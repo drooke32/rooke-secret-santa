@@ -2,7 +2,7 @@ import '../css/App.css';
 import CryptoJS from 'crypto-js';
 import React, { Component } from 'react';
 import { base, auth, storageKey} from '../helpers/base';
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Lists from './pages/Lists';
@@ -58,8 +58,8 @@ class App extends Component {
       person: '',
     };
   }
-
-  componentDidMount() {
+  
+  componentWillMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         base.fetch('people', {
@@ -72,6 +72,7 @@ class App extends Component {
             'person' : CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8)
           };
           this.setState(data);
+          this.props.history.push('/');
         });
       }
     });
@@ -135,7 +136,7 @@ class App extends Component {
             />
             {/* 
               Keep this commented out unless you need to match people again
-              <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
+            <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
             */}
             <Route component={NotFound}/>
           </Switch>
@@ -145,4 +146,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

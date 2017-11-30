@@ -59,7 +59,7 @@ class Login extends React.Component {
 
     auth.signInWithEmailAndPassword(this.email.input.value, this.password.input.value)
     .then(() => {
-      this.props.history.push('/');
+      //there is an observer on auth change that handles data fetching and redirecting
     }, (error) => {
       this.handleLoginError(error);
     });
