@@ -1,6 +1,7 @@
 .container {
   max-width: 570px;
   margin: 0 auto;
+  margin-top: 20px;
 }
 
 .bottom-button {
@@ -14,10 +15,6 @@
 
 .action-container {
   text-align: right;
-}
-
-.card {
-  margin-top: 40px;
 }
 
 .form-error {
