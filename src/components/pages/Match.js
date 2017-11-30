@@ -24,7 +24,7 @@ class Match extends React.Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       match: "Match Incomplete",
       seed: "Database Not Seeded",
@@ -43,9 +43,6 @@ class Match extends React.Component {
     let matches = this.ensureValidMatches();
     matches = this.encryptMatches(matches);
     this.saveMatches(matches);
-    this.setState({
-      match: 'Match Complete'
-    });
   }
 
   ensureValidMatches() {
@@ -78,14 +75,22 @@ class Match extends React.Component {
   }
 
   saveMatches(matches) {
-    let people = this.props.people;
-    Object.keys(people).map((person, index) => {
-      //this array keying is gross, but have to do it like this since
-      //we can't assume the key is the persons name, as it changes to a UID
-      //once they activate their account
-      people[person]['person'] = matches[people[person]['owner']];
-    }); 
-    this.props.saveMatches(people);
+    let people = {};
+    base.fetch('people', {
+      context: this
+    }).then((people) => {
+      Object.keys(people).map((person, index) => {
+        //this array keying is gross, but have to do it like this since
+        //we can't assume the key is the persons name, as it changes to a UID
+        //once they activate their account
+        people[person]['person'] = matches[people[person]['owner']];
+      }); 
+      base.post('people', {
+        data: people
+      }).then(() => {
+        this.setState({match: "Match Complete"});
+      });
+    });
   }
 
   encryptMatches(matches) {

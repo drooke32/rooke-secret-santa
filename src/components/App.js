@@ -3,7 +3,7 @@ import CryptoJS from 'crypto-js';
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { base, auth, storageKey, isAuthenticated} from '../helpers/base';
+import { base, auth, storageKey} from '../helpers/base';
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
@@ -17,7 +17,7 @@ import ActivateAccount from './pages/ActivateAccount';
 const PrivateRoute = ({ component, redirectTo, ...rest }) => {
   return (
     <Route {...rest} render={routeProps => {
-      return isAuthenticated
+      return auth.currentUser
       ? ( renderMergedProps(component, routeProps, rest) ) 
       : (
         <Redirect to={{
@@ -49,7 +49,6 @@ class App extends Component {
   constructor() {
     super();
 
-    this.saveMatches = this.saveMatches.bind(this);
     this.activateUser = this.activateUser.bind(this);
     this.addItem = this.addItem.bind(this);
 
@@ -60,56 +59,32 @@ class App extends Component {
     };
   }
 
-  componentWillMount() {
-    this.ref = base.syncState('people', {
-      context: this,
-      state: 'people'
-    });
-  }
-
   componentDidMount() {
-    auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        window.localStorage.setItem(storageKey, authUser.uid);
-        const user = this.state.people[authUser.uid];
-        if (user) {
-          this.setCurrentUserInState(user);
-        }
-      } else {
-        window.localStorage.removeItem(storageKey);
-        this.setState({user: null, person: null});
-      }
-    });
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (Object.keys(this.state.people).length === 0 && nextState.people) {
-      const user = auth.currentUser ? nextState.people[auth.currentUser.uid] : false;
-      if (user) {
-        this.setCurrentUserInState(user);
-      }
+    if (auth.currentUser) {
+      base.fetch('people', {
+        context: this
+      }).then(people => {
+        const user = people[auth.currentUser.uid];
+        const data = {
+          'people' : people,
+          user,
+          'person' : CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8)
+        };
+        this.setState(data);
+      });
     }
   }
 
-  componentWillUnmount() {
-    base.removeBinding(this.ref);
-  }
-
-  setCurrentUserInState(user) {
-    const person = CryptoJS.AES.decrypt(user['person'], storageKey).toString(CryptoJS.enc.Utf8);
-    this.setState({user: user['owner'], person});
-  }
-
-  saveMatches(people) {
-    this.setState({people});
-  }
-
   activateUser(name, uid) {
-    const people = {...this.state.people};
-    people[uid] = people[name];
-    people[name] = null;
-    this.setState({ people });
-    this.setCurrentUserInState(uid);
+    base.fetch(`people`, {
+      context: this
+    }).then((people) => {
+      people[uid] = people[name];
+      people[name] = null;
+      base.update('people', {
+        data: people
+      });
+    });
   }
 
   addItem(item) {
@@ -123,8 +98,6 @@ class App extends Component {
           <Header 
             user={this.state.user}
             person={this.state.person}
-            auth={auth}
-            isAuthenticated={isAuthenticated}
           />
           <Switch>
             <PropsRoute path="/login" component={Login} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { auth } from '../../helpers/base';
 import { withRouter } from 'react-router-dom'; 
 
 import AppBar from 'material-ui/AppBar';
@@ -18,6 +19,7 @@ class Header extends React.Component {
     this.navigateToAll = this.navigateToAll.bind(this);
     this.navigateToMine = this.navigateToMine.bind(this);
     this.navigateChangePassword = this.navigateChangePassword.bind(this);
+    this.navigateToLogin = this.navigateToLogin.bind(this);
     this.signOut = this.signOut.bind(this);
 
     this.state = {open: false};
@@ -40,9 +42,13 @@ class Header extends React.Component {
   }
 
   signOut() {
-    this.props.auth.signOut().then(() => {
+    auth.signOut().then(() => {
       this.props.history.push('/login');
     });
+  }
+
+  navigateToLogin() {
+    this.props.history.push('/login');
   }
 
   render() {
@@ -52,7 +58,7 @@ class Header extends React.Component {
           title={`Rooke Secret Santa`}
           showMenuIconButton={false}
           iconElementRight={
-            this.props.isAuthenticated() ?
+            auth.currentUser ?
             <IconMenu
               iconButtonElement={
                 <IconButton><Menu /></IconButton>
@@ -79,7 +85,10 @@ class Header extends React.Component {
               />
               <MenuItem onClick={this.signOut} primaryText="Sign out" />
             </IconMenu>
-            : <FlatButton label="Login" />
+            : <FlatButton 
+              label="Login"
+              onClick={this.navigateToLogin}
+            />
           }
         />
       </div>

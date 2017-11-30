@@ -11,6 +11,3 @@ export const base = Rebase.createClass(app.database());
 
 export const auth = app.auth();
 export const storageKey = 'rooke-secret-santa-auth';
-export const isAuthenticated = () => {
-  return !!auth.currentUser || !!localStorage.getItem(storageKey);
-}
