@@ -52,6 +52,26 @@ class Item extends React.Component {
     });
   };
 
+  validateItem() {
+    const validation = {...this.state.validation};
+    validation['itemError'] = '';
+    validation['descriptionError'] = '';
+    let valid = true;
+
+    if (!this.state.item) {
+      validation['itemError'] = 'The item is required';
+      valid = false;
+    }
+
+    if (!this.state.description) {
+      validation['descriptionError'] = 'You must put in some sort of description or information';
+      valid = false;
+    }
+
+    this.setState({ validation });
+    return valid;
+  }
+
   saveItem() {
     if (!this.validateItem()) {
       return;
