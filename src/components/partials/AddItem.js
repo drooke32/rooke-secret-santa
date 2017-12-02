@@ -16,7 +16,16 @@ class AddItem extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.addItem = this.addItem.bind(this);
 
-    this.state = {open: false};
+    this.state = {
+      open: false,
+      item: '',
+      description: '',
+      link: '',
+      validation: {
+        itemError: '',
+        descriptionError: '',
+      }
+    };
   }
 
   clickAddButton() {
@@ -24,14 +33,61 @@ class AddItem extends React.Component {
   }
 
   closeModal() {
-    this.setState({open: false});
+    this.setState({
+      open: false,
+      item: '',
+      description: '',
+      link: '',
+      validation: {
+        itemError: '',
+        descriptionError: '',
+      }
+    });
+  }
+
+  validateItem() {
+    const validation = {...this.state.validation};
+    validation['itemError'] = '';
+    validation['descriptionError'] = '';
+    let valid = true;
+
+    if (!this.state.item) {
+      validation['itemError'] = 'The item is required';
+      valid = false;
+    }
+
+    if (!this.state.description) {
+      validation['descriptionError'] = 'You must put in some sort of description or information';
+      valid = false;
+    }
+
+    this.setState({ validation });
+    return valid;
   }
 
   addItem() {
-    //validate
-    this.props.addItem('test');
+    if (!this.validateItem()) {
+      return;
+    }
+
+    const item = {
+      item: this.state.item,
+      description: this.state.description,
+      link: this.state.link,
+    };
+
+    this.props.addItem(item);
     this.closeModal();
   }
+
+  handleChange = (event) => {
+    const field = event.target.name;
+    const value = event.target.value;
+
+    this.setState({
+      [field]: value,
+    });
+  };
 
   render() {
     const actions = [
@@ -49,30 +105,41 @@ class AddItem extends React.Component {
     return (
       <div>
         <FloatingActionButton
-          className='add-button'
           secondary={true}
+          className='add-button'
           onClick={ this.clickAddButton }
         >
           <ContentAdd />
         </FloatingActionButton>
         <Dialog
+          modal={true}
           title="Add Item"
           actions={actions}
-          modal={true}
           open={this.state.open}
         >
           <TextField
-            floatingLabelText="Item"
+            name="item"
             fullWidth={true}
+            floatingLabelText="Item"
+            onChange={this.handleChange}
+            hintText="Enter the item here"
+            errorText={this.state.validation.itemError}
           /><br />
           <TextField
             multiLine={true}
-            floatingLabelText="Description"
             fullWidth={true}
+            name="description"
+            onChange={this.handleChange}
+            floatingLabelText="Description"
+            errorText={this.state.validation.descriptionError}
+            hintText="Describe the item here if you need to. Add things like where it can be purchased, a preferred size, etc."
           /><br />
           <TextField
-            floatingLabelText="Link"
+            name="link"
             fullWidth={true}
+            floatingLabelText="Link"
+            onChange={this.handleChange}
+            hintText="If you want to provide a link, add the full url here. It would show up as a usable link on your list item."
           /><br />
         </Dialog>
       </div>
