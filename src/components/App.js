@@ -2,8 +2,8 @@ import '../css/App.css';
 import CryptoJS from 'crypto-js';
 import React, { Component } from 'react';
 import { base, auth, encryptionKey} from '../helpers/base';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
@@ -162,26 +162,26 @@ class App extends Component {
             <PrivateRoute
               exact
               path="/"
+              component={Lists}
               redirectTo="/login"
               user={this.state.user}
+              addItem={this.addItem}
               person={this.state.person}
               people={this.state.people}
-              component={Lists}
-              addItem={this.addItem}
             />
             <PrivateRoute
-              path="/lists/:name?"
+              component={Lists}
               redirectTo="/login"
+              path="/lists/:name?"
+              addItem={this.addItem}
               user={this.state.user}
               person={this.state.person}
               people={this.state.people}
-              component={Lists}
-              addItem={this.addItem}
             />
             <PropsRoute path="/forgot-password" component={ForgotPassword}/>
             <PrivateRoute 
-              path="/change-password"
               redirectTo="/login"
+              path="/change-password"
               component={ChangePassword}
             />
             <PropsRoute

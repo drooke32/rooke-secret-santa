@@ -1,8 +1,9 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
 import seed from '../../helpers/people'; 
-import { base, encryptionKey } from '../../helpers/base';
+
 import RaisedButton from 'material-ui/RaisedButton';
+import { base, encryptionKey } from '../../helpers/base';
 import { Card, CardActions, CardText } from 'material-ui/Card';
 
 const people = [
