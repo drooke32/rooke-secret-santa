@@ -65,7 +65,7 @@ class AddItem extends React.Component {
     return valid;
   }
 
-  addItem() {
+  saveItem() {
     if (!this.validateItem()) {
       return;
     }
@@ -76,7 +76,7 @@ class AddItem extends React.Component {
       link: this.state.link,
     };
 
-    this.props.addItem(item);
+    this.props.saveItem(item);
     this.closeModal();
   }
 
@@ -99,7 +99,7 @@ class AddItem extends React.Component {
       <RaisedButton
         label="Submit"
         primary={ true }
-        onClick={ this.addItem }
+        onClick={ this.saveItem }
       />,
     ]
     return (

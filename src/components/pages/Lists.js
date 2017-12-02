@@ -110,7 +110,7 @@ class Lists extends React.Component {
       <div className="container">
         { this.state.isOwner && 
           <AddItem 
-            addItem={ this.addItem }
+            saveItem={ this.addItem }
           /> 
         }
         <h2 className="list-header">{ this.state.title }</h2>

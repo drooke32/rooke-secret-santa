@@ -14,11 +14,11 @@ class Item extends React.Component {
     this.deleteItem = this.deleteItem.bind(this);
 
     this.state = {
-      isOwner: this.props.isOwner,
-      item: this.props.item,
-      description: this.props.description,
-      link: this.props.link,
-      itemKey: this.props.itemKey
+      isOwner: false,
+      item: '',
+      description: '',
+      link: '',
+      itemKey: '',
     };
   }
 
@@ -34,8 +34,17 @@ class Item extends React.Component {
     }
   }
 
+  handleChange = (event) => {
+    const field = event.target.name;
+    const value = event.target.value;
+
+    this.setState({
+      [field]: value,
+    });
+  };
+
   editItem() {
-    console.log('edit click');
+    this.setState({ isEditing: true });
   }
 
   deleteItem() {
@@ -46,13 +55,43 @@ class Item extends React.Component {
     return (
       <Card className='container'>
         <CardTitle title={ this.state.item } />
-        <CardText>
-          <p>{ this.state.description }</p>
-          <br />
-          { this.state.link && 
-            <a href={ this.state.link }>Link to Item</a>
-          }
-        </CardText>
+        { this.state.isEditing ? 
+          <CardText>
+            <TextField
+              name="item"
+              fullWidth={ true }
+              floatingLabelText="Item"
+              onChange={ this.handleChange }
+              hintText="Enter the item here"
+              errorText={ this.state.validation.itemError }
+            /><br />
+            <TextField
+              multiLine={ true }
+              fullWidth={ true }
+              name="description"
+              onChange={ this.handleChange }
+              floatingLabelText="Description"
+              errorText={ this.state.validation.descriptionError }
+              hintText="Describe the item here if you need to. Add things like where it can be purchased, a preferred size, etc."
+            /><br />
+            <TextField
+              name="link"
+              fullWidth={ true }
+              floatingLabelText="Link"
+              onChange={ this.handleChange }
+              hintText="If you want to provide a link, add the full url here. It would show up as a usable link on your list item."
+            /><br />
+          </CardText>
+        :
+          <CardText>
+            <p>{ this.state.description }</p>
+            <br />
+            { this.state.link && 
+              <a href={ this.state.link }>Link to Item</a>
+            }
+          </CardText>
+        }
+        
         { this.state.isOwner &&
           <CardActions className="action-container">
             <FlatButton
