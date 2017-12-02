@@ -1,7 +1,7 @@
 import React from 'react';
 import { auth } from '../../helpers/base';
 
-import AddItem from '../partials/AddItem';
+import Add from '../partials/Add';
 import List from '../partials/List';
 
 const isCurrentUser = (props) => {
@@ -109,7 +109,7 @@ class Lists extends React.Component {
     return (
       <div className="container">
         { this.state.isOwner && 
-          <AddItem 
+          <Add 
             saveItem={ this.addItem }
           /> 
         }

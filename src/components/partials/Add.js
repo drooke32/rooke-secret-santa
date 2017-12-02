@@ -7,14 +7,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 
-class AddItem extends React.Component {
+class Add extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.clickAddButton = this.clickAddButton.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.addItem = this.addItem.bind(this);
+    this.saveItem = this.saveItem.bind(this);
 
     this.state = {
       open: false,
@@ -147,4 +147,4 @@ class AddItem extends React.Component {
   }
 }
 
-export default AddItem;
+export default Add;

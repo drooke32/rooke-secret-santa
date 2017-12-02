@@ -47,7 +47,7 @@ class List extends React.Component {
         key={ key }
         itemKey={ key }
         deleteItem={ this.deleteItem }
-        editItem={ this.editItem }
+        saveItem={ this.editItem }
       />);
     });
     return items;
