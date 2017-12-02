@@ -1,6 +1,21 @@
 import React from 'react';
+import { auth } from '../../helpers/base';
 
 import AddItem from '../partials/AddItem';
+import List from '../partials/List';
+
+const isCurrentUser = (props) => {
+  return props.match.params.name === props.user ||
+    props.match.path === "/";
+}
+
+const isSecretPerson = (props) => {
+  return props.match.params.name === props.person;
+}
+
+const isOtherPerson = (props) => {
+  return props.match.params.name;
+}
 
 class Lists extends React.Component {
 
@@ -8,9 +23,11 @@ class Lists extends React.Component {
     super(props);
 
     this.addItem = this.addItem.bind(this);
+    this.editItem = this.editItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
 
     this.state = {
-      list: [],
+      list: {},
       isOwner: false,
       title: "",
     }
@@ -19,6 +36,7 @@ class Lists extends React.Component {
   componentDidMount() {
     this.setIsOwner(this.props);
     this.setTitle(this.props);
+    this.setList(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,11 +45,11 @@ class Lists extends React.Component {
     }
     this.setIsOwner(nextProps);
     this.setTitle(nextProps);
+    this.setList(nextProps);
   }
 
   setIsOwner(props) {
-    if (props.match.params.name === props.user ||
-      props.match.path === "/") {
+    if (isCurrentUser(props)) {
       this.setState({isOwner: true});
     } else {
       this.setState({isOwner: false});
@@ -40,12 +58,11 @@ class Lists extends React.Component {
 
   setTitle(props) {
     let title = "All Lists";
-    if (props.match.params.name === props.user ||
-      props.match.path === "/") {
+    if (isCurrentUser(props)) {
       title = 'My List';
-    } else if (props.match.params.name === props.person) {
+    } else if (isSecretPerson(props)) {
       title = `My Person: ${props.person}`;
-    } else if (props.match.params.name) {
+    } else if (isOtherPerson(props)) {
       title = props.match.params.name;
     } else {
       title = 'All Lists';
@@ -53,9 +70,40 @@ class Lists extends React.Component {
     this.setState({title});
   }
 
+  setList(props) {
+    let list = {}
+
+    if (isCurrentUser(props)) {
+      list = this.props.people[auth.currentUser.uid]['list'];
+    } else if (isOtherPerson(props)) {
+      list = Object.keys(this.props.people).map((key, index) => {
+        if (this.props.people[key]['owner'] === props.match.params.name) {
+          list = this.props.people[key]['list'];
+        }
+      });
+    } else {
+      for (let key in this.props.people) {
+        list = this.props.people[key]['list'];
+        break;
+      }
+    }
+    
+    this.setState({ 
+      list
+    });
+  }
+
   addItem(item) {
     this.props.addItem(item);
-  } 
+  }
+
+  editItem(key, item) {
+    this.props.editItem(key, item);
+  }
+
+  deleteItem(key) {
+    this.props.deleteItem(key);
+  }
 
   render() {
     return (
@@ -65,7 +113,13 @@ class Lists extends React.Component {
             addItem={ this.addItem }
           /> 
         }
-        <h2 className="list-header">{this.state.title}</h2>
+        <h2 className="list-header">{ this.state.title }</h2>
+        <List 
+          listItems={ this.state.list }
+          isOwner={ this.state.isOwner }
+          editItem={ this.editItem }
+          deleteItem={ this.deleteItem }
+        />
       </div>
     );
   }

@@ -30,6 +30,10 @@
   color: rgba(0,0,0,.87);
 }
 
+.list-container {
+  margin-bottom: 30px;
+}
+
 .add-button {
   position: absolute;
   bottom: 40px;

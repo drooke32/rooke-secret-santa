@@ -93,52 +93,52 @@ class AddItem extends React.Component {
     const actions = [
       <FlatButton
         label="Cancel"
-        primary={true}
-        onClick={this.closeModal}
+        primary={ true }
+        onClick={ this.closeModal }
       />,
       <RaisedButton
         label="Submit"
-        primary={true}
-        onClick={this.addItem}
+        primary={ true }
+        onClick={ this.addItem }
       />,
     ]
     return (
       <div>
         <FloatingActionButton
-          secondary={true}
+          secondary={ true }
           className='add-button'
           onClick={ this.clickAddButton }
         >
           <ContentAdd />
         </FloatingActionButton>
         <Dialog
-          modal={true}
+          modal={ true }
           title="Add Item"
-          actions={actions}
-          open={this.state.open}
+          actions={ actions }
+          open={ this.state.open }
         >
           <TextField
             name="item"
-            fullWidth={true}
+            fullWidth={ true }
             floatingLabelText="Item"
-            onChange={this.handleChange}
+            onChange={ this.handleChange }
             hintText="Enter the item here"
-            errorText={this.state.validation.itemError}
+            errorText={ this.state.validation.itemError }
           /><br />
           <TextField
-            multiLine={true}
-            fullWidth={true}
+            multiLine={ true }
+            fullWidth={ true }
             name="description"
-            onChange={this.handleChange}
+            onChange={ this.handleChange }
             floatingLabelText="Description"
-            errorText={this.state.validation.descriptionError}
+            errorText={ this.state.validation.descriptionError }
             hintText="Describe the item here if you need to. Add things like where it can be purchased, a preferred size, etc."
           /><br />
           <TextField
             name="link"
-            fullWidth={true}
+            fullWidth={ true }
             floatingLabelText="Link"
-            onChange={this.handleChange}
+            onChange={ this.handleChange }
             hintText="If you want to provide a link, add the full url here. It would show up as a usable link on your list item."
           /><br />
         </Dialog>

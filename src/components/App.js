@@ -129,8 +129,10 @@ class App extends Component {
     const people = {...this.state.people};
     const person = people[auth.currentUser.uid];
 
+    
     delete person['list'][key];
-    const noItemsInList = Object.keys(person['list'].length === 0);
+    const noItemsInList = Object.keys(person['list']).length === 0;
+
     if (noItemsInList) {
       person['list'] = -1; //have to put in a value or firebase removes the key
     }
@@ -154,46 +156,56 @@ class App extends Component {
       <MuiThemeProvider>
         <div>
           <Header 
-            user={this.state.user}
-            person={this.state.person}
+            user={ this.state.user }
+            person={ this.state.person }
           />
           <Switch>
-            <PropsRoute path="/login" component={Login} />
+            <PropsRoute 
+              path="/login"
+              component={ Login }
+            />
             <PrivateRoute
               exact
               path="/"
-              component={Lists}
+              component={ Lists }
               redirectTo="/login"
-              user={this.state.user}
-              addItem={this.addItem}
-              person={this.state.person}
-              people={this.state.people}
+              user={ this.state.user }
+              addItem={ this.addItem }
+              editItem={ this.editItem }
+              person={ this.state.person }
+              people={ this.state.people }
+              deleteItem={ this.deleteItem }
             />
             <PrivateRoute
-              component={Lists}
+              component={ Lists }
               redirectTo="/login"
               path="/lists/:name?"
-              addItem={this.addItem}
-              user={this.state.user}
-              person={this.state.person}
-              people={this.state.people}
+              user={ this.state.user }
+              addItem={ this.addItem }
+              editItem={ this.editItem }
+              person={ this.state.person }
+              people={ this.state.people }
+              deleteItem={ this.deleteItem }
             />
-            <PropsRoute path="/forgot-password" component={ForgotPassword}/>
+            <PropsRoute 
+              path="/forgot-password"
+              component={ ForgotPassword }
+            />
             <PrivateRoute 
               redirectTo="/login"
               path="/change-password"
-              component={ChangePassword}
+              component={ ChangePassword }
             />
             <PropsRoute
               path="/activate"
-              component={ActivateAccount}
-              activateUser={this.activateUser}
+              component={ ActivateAccount }
+              activateUser={ this.activateUser }
             />
             {/* 
               Keep this commented out unless you need to match people again
             <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/> 
             */}
-            <Route component={NotFound}/>
+            <Route component={ NotFound }/>
           </Switch>
         </div>
       </MuiThemeProvider>
