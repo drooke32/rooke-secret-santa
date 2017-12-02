@@ -91,7 +91,22 @@ class App extends Component {
   }
 
   addItem(item) {
-    console.log(item);
+    const people = {...this.state.people};
+    const person = people[auth.currentUser.uid];
+    const timestamp = Date.now();
+
+    if (!person['list'] || person['list'] === -1) {
+      person['list'] = [];
+    }
+
+    person['list'][`item-${timestamp}`] = item;
+    people[auth.currentUser.uid] = person;
+
+    base.post(`people/${auth.currentUser.uid}`, {
+      data: person
+    }).then(() => {
+      this.setState({ people });
+    });
   }
 
   render() {
