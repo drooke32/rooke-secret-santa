@@ -76,7 +76,7 @@ class Lists extends React.Component {
     if (isCurrentUser(props)) {
       list = this.props.people[auth.currentUser.uid]['list'];
     } else if (isOtherPerson(props)) {
-      list = Object.keys(this.props.people).map((key, index) => {
+      Object.keys(this.props.people).map((key, index) => {
         if (this.props.people[key]['owner'] === props.match.params.name) {
           list = this.props.people[key]['list'];
         }
@@ -87,7 +87,7 @@ class Lists extends React.Component {
         break;
       }
     }
-    
+
     this.setState({ 
       list
     });

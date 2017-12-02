@@ -12,7 +12,7 @@ class List extends React.Component {
 
     this.state = {
       isOwner: this.props.isOwner,
-      listItems: this.props.listItems,
+      listItems: -1,
     };
   }
 
