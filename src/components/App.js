@@ -130,11 +130,23 @@ class App extends Component {
     const person = people[auth.currentUser.uid];
 
     delete person['list'][key];
+    const noItemsInList = Object.keys(person['list'].length === 0);
+    if (noItemsInList) {
+      person['list'] = -1; //have to put in a value or firebase removes the key
+    }
     people[auth.currentUser.uid] = person;
 
-    base.remove(`people/${auth.currentUser.uid}/list/${key}`).then(() => {
-      this.setState({ people });
-    });
+    if (noItemsInList) {
+      base.post(`people/${auth.currentUser.uid}/list`, {
+        data: -1
+      }).then(() => {
+        this.setState({ people });
+      });
+    } else {
+      base.remove(`people/${auth.currentUser.uid}/list/${key}`).then(() => {
+        this.setState({ people });
+      });
+    }
   }
 
   render() {
