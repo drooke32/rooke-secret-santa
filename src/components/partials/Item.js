@@ -21,7 +21,7 @@ class Item extends React.Component {
       description: this.props.description,
       link: this.props.link,
       itemKey: this.props.itemKey,
-      isEditing: false,
+      isEditing: this.props.isEditing,
       editState: {},
       validation: {
         itemError: '',
@@ -38,6 +38,7 @@ class Item extends React.Component {
         description: nextProps.description,
         link: nextProps.link,
         itemKey: nextProps.itemKey,
+        isEditing: nextProps.isEditing,
       })
     }
   }

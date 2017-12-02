@@ -48,6 +48,7 @@ class List extends React.Component {
         itemKey={ key }
         deleteItem={ this.deleteItem }
         saveItem={ this.editItem }
+        isEditing= { false }
       />);
     });
     return items;
