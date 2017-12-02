@@ -51,6 +51,8 @@ class App extends Component {
 
     this.activateUser = this.activateUser.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.editItem = this.editItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
 
     this.state = {
       people: {},
@@ -105,6 +107,32 @@ class App extends Component {
     base.post(`people/${auth.currentUser.uid}`, {
       data: person
     }).then(() => {
+      this.setState({ people });
+    });
+  }
+
+  editItem(key, item) {
+    const people = {...this.state.people};
+    const person = people[auth.currentUser.uid];
+
+    person['list'][key] = item;
+    people[auth.currentUser.uid] = person;
+
+    base.post(`people/${auth.currentUser.uid}`, {
+      data: person
+    }).then(() => {
+      this.setState({ people });
+    });
+  }
+
+  deleteItem(key) {
+    const people = {...this.state.people};
+    const person = people[auth.currentUser.uid];
+
+    delete person['list'][key];
+    people[auth.currentUser.uid] = person;
+
+    base.remove(`people/${auth.currentUser.uid}/list/${key}`).then(() => {
       this.setState({ people });
     });
   }
