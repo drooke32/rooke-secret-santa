@@ -30,6 +30,7 @@ class Lists extends React.Component {
       list: {},
       isOwner: false,
       title: "",
+      isAll: false,
     }
   }
 
@@ -58,6 +59,7 @@ class Lists extends React.Component {
 
   setTitle(props) {
     let title = "All Lists";
+    let isAll = false;
     if (isCurrentUser(props)) {
       title = 'My List';
     } else if (isSecretPerson(props)) {
@@ -66,8 +68,9 @@ class Lists extends React.Component {
       title = props.match.params.name;
     } else {
       title = 'All Lists';
+      isAll = true;
     }
-    this.setState({title});
+    this.setState({title, isAll});
   }
 
   setList(props) {
@@ -119,6 +122,8 @@ class Lists extends React.Component {
           isOwner={ this.state.isOwner }
           editItem={ this.editItem }
           deleteItem={ this.deleteItem }
+          isAll={ this.state.isAll }
+          people={ this.props.people }
         />
       </div>
     );

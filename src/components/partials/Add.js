@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Item from './Item';
-
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';

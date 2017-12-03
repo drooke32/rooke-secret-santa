@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Item from './Item';
+import ListSelector from './ListSelector';
 
 class List extends React.Component {
 
@@ -9,9 +10,11 @@ class List extends React.Component {
 
     this.editItem = this.editItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.selectPerson = this.selectPerson.bind(this);
 
     this.state = {
       isOwner: this.props.isOwner,
+      isAll: this.props.isAll,
       listItems: -1,
     };
   }
@@ -20,9 +23,14 @@ class List extends React.Component {
     if (this.props !== nextProps) {
       this.setState({
         listItems: nextProps.listItems,
-        isOwner: nextProps.isOwner
+        isAll: nextProps.isAll,
+        isOwner: nextProps.isOwner,
       });
     }
+  }
+
+  selectPerson(listItems) {
+    this.setState({listItems});
   }
 
   editItem(key, item) {
@@ -57,6 +65,12 @@ class List extends React.Component {
   render() {
     return (
       <div className='list-container'>
+        { this.state.isAll && 
+          <ListSelector
+            people={ this.props.people }
+            selectPerson={ this.selectPerson }
+          />
+        }
         { this.RenderList() }
       </div>
     );
