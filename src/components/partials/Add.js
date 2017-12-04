@@ -116,6 +116,7 @@ class Add extends React.Component {
           title="Add Item"
           actions={ actions }
           open={ this.state.open }
+          autoScrollBodyContent={ true }
         >
           <TextField
             name="item"
