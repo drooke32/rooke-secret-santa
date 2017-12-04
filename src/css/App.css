@@ -22,6 +22,7 @@
 }
 
 .list-header {
+  padding-left: 16px;
   padding-bottom: .3em;
   font-size: 1.5em;
   font-weight: 500;
@@ -31,11 +32,12 @@
 }
 
 .list-container {
-  margin-bottom: 30px;
+  margin-bottom: 75px;
 }
 
 .add-button {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
 }
