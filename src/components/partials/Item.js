@@ -141,7 +141,7 @@ class Item extends React.Component {
         <p>{ this.state.description }</p>
         <br />
         { this.state.link && 
-          <a href={ this.state.link }>Link to Item</a>
+          <a target="_blank" href={ this.state.link }>Link to Item</a>
         }
       </CardText>
     </div>;
