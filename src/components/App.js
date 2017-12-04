@@ -62,19 +62,15 @@ class App extends Component {
   }
   
   componentWillMount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
         base.fetch('people', {
           context: this
         }).then(people => {
-          const user = people[auth.currentUser.uid];
-          const data = {
-            people,
-            user: user['owner'],
-            'person' : CryptoJS.AES.decrypt(user['person'], encryptionKey).toString(CryptoJS.enc.Utf8)
-          };
-          this.setState(data);
-          this.props.history.push('/');
+          const user = people[authUser.uid];
+          if (user) { //it won't find the user during active, so this check is necessary
+            this.setStateAndRedirectToMyList(user, people);
+          }
         });
       }
     });
@@ -85,11 +81,25 @@ class App extends Component {
       context: this
     }).then((people) => {
       people[uid] = people[name];
+      const user = people[uid];
       people[name] = null;
       base.update('people', {
         data: people
       });
+
+      //because the user key doesnt match in activate, handle the state and redirect here
+      this.setStateAndRedirectToMyList(user, people);
     });
+  }
+
+  setStateAndRedirectToMyList(user, people) {
+    const data = {
+      people,
+      user: user['owner'],
+      person : CryptoJS.AES.decrypt(user['person'], encryptionKey).toString(CryptoJS.enc.Utf8)
+    };
+    this.setState(data);
+    this.props.history.push('/');
   }
 
   addItem(item) {
