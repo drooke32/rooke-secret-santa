@@ -20,6 +20,8 @@ const items = [
   <MenuItem key={9} value={'Mama'} primaryText="Mama" />,
   <MenuItem key={10} value={'Mel'} primaryText="Mel" />,
   <MenuItem key={11} value={'Papa'} primaryText="Papa" />,
+  <MenuItem key={12} value={'Nadine'} primaryText="Nadine" />,
+  <MenuItem key={13} value={'Leila'} primaryText="Leila" />,
 ]
 
 class ActivateAccount extends React.Component {

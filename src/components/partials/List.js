@@ -43,7 +43,7 @@ class List extends React.Component {
 
   RenderList = () => {
     if (!this.state.listItems || this.state.listItems === -1) {
-      return (<h2>No Items on List</h2>);
+      return (<h2 className="no-list">No Items on List</h2>);
     }
     const items = [];
     Object.keys(this.state.listItems).map((key) => {

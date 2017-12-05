@@ -9,24 +9,26 @@ class ListSelector extends React.Component {
     super(props);
 
     this.state = {
-      key: '',
       name: '',
     };
   }
 
   handleChange = (event, index, value) => {
     this.setState({
-      key: value,
-      name: this.props.people[value]['owner'],
+      name: value,
     });
 
-    this.props.selectPerson(this.props.people[value]['list']);
+    Object.keys(this.props.people).map((key, index) => {
+      if (this.props.people[key]['owner'] === value) {
+        this.props.selectPerson(this.props.people[key]['list']);
+      }
+    });
   };
 
   renderItems = () => {
     let items = [];
     Object.keys(this.props.people).map((key, index) => {
-      items.push(<MenuItem key={key} value={key} primaryText={this.props.people[key]['owner']} />);
+      items.push(<MenuItem key={key} value={this.props.people[key]['owner']} primaryText={this.props.people[key]['owner']} />);
     });
     return items;
   }
@@ -38,6 +40,7 @@ class ListSelector extends React.Component {
       onChange={this.handleChange}
       fullWidth={true}
       maxHeight={200}
+      className="list-selector"
     >
       { this.renderItems() }
     </SelectField>
