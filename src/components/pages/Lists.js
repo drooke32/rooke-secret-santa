@@ -3,6 +3,7 @@ import { auth } from '../../helpers/base';
 
 import Add from '../partials/Add';
 import List from '../partials/List';
+import Snackbar from 'material-ui/Snackbar';
 
 const isCurrentUser = (props) => {
   return props.match.params.name === props.user ||
@@ -25,12 +26,15 @@ class Lists extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.editItem = this.editItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.openSnackbar = this.openSnackbar.bind(this);
 
     this.state = {
       list: {},
       isOwner: false,
       title: "",
       isAll: false,
+      snackOpen: false,
+      snackMessage: "Item Saved",
     }
   }
 
@@ -47,6 +51,13 @@ class Lists extends React.Component {
     this.setIsOwner(nextProps);
     this.setTitle(nextProps);
     this.setList(nextProps);
+  }
+
+  openSnackbar(snackMessage) {
+    this.setState({
+      snackOpen: true,
+      snackMessage,
+    });
   }
 
   setIsOwner(props) {
@@ -97,24 +108,41 @@ class Lists extends React.Component {
   }
 
   addItem(item) {
+    this.openSnackbar("Item Successfully Saved");
     this.props.addItem(item);
   }
 
   editItem(key, item) {
+    this.openSnackbar("Item Successfully Saved");
     this.props.editItem(key, item);
   }
 
   deleteItem(key) {
+    this.openSnackbar("Item Successfully Deleted");
     this.props.deleteItem(key);
   }
+
+  handleSnackbarClose = () => {
+    this.setState({
+      snackOpen: false,
+    });
+  };
 
   render() {
     return (
       <div className="container">
         { this.state.isOwner && 
-          <Add 
-            saveItem={ this.addItem }
-          /> 
+          <div>
+            <Add 
+              saveItem={ this.addItem }
+            />
+            <Snackbar
+              autoHideDuration={4000}
+              open={ this.state.snackOpen }
+              message={ this.state.snackMessage }
+              onRequestClose={ this.handleSnackbarClose }
+            />
+          </div>
         }
         <h2 className="list-header">{ this.state.title }</h2>
         <List 
