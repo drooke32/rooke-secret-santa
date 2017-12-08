@@ -9,7 +9,7 @@ class ListSelector extends React.Component {
     super(props);
 
     this.state = {
-      name: '',
+      name: 'Aaron',
     };
   }
 
