@@ -65,9 +65,19 @@ class Login extends React.Component {
     });
   }
 
+  onKeyPress(e) {
+    if (e.charCode === 13) {
+      this.login(e);
+    }
+  }
+
   render() {
     return (
-      <Card className='container' expanded={this.state.formValidation.error}>
+      <Card 
+        className='container'
+        expanded={this.state.formValidation.error}
+        onKeyPress={(e) => this.onKeyPress(e)}
+      >
         <CardTitle title="Rooke Secret Santa" />
         <CardText
           expandable={true}
