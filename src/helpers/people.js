@@ -1,4 +1,4 @@
-module.exports = {
+export const seed = {
   Aaron: {
     owner: 'Aaron',
     list: -1,
@@ -51,6 +51,18 @@ module.exports = {
   },
   Papa: {
     owner: 'Papa',
+    list: -1,
+    person: -1,
+  },
+};
+export const kiddos = {
+  Nadine: {
+    owner: 'Nadine',
+    list: -1,
+    person: -1,
+  },
+  Leila: {
+    owner: 'Leila',
     list: -1,
     person: -1,
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import CryptoJS from 'crypto-js';
-import seed from '../../helpers/people'; 
+import {seed, kiddos} from '../../helpers/people';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import { base, encryptionKey } from '../../helpers/base';
@@ -29,6 +29,7 @@ class Match extends React.Component {
     this.state = {
       match: "Match Incomplete",
       seed: "Database Not Seeded",
+      kiddos: "Kiddos Not Added",
     };
   }
 
@@ -37,6 +38,18 @@ class Match extends React.Component {
       data: seed
     }).then(() => {
       this.setState({seed: "Database Seeded"});
+    });
+  }
+
+  addKiddos() {
+    base.fetch('people', {
+      context: this
+    }).then((people) => {
+      base.post('people', {
+        data: {...people, ...kiddos}
+      }).then(() => {
+        this.setState({kiddos: "Kiddos Added"});
+      });
     });
   }
 
@@ -148,18 +161,31 @@ class Match extends React.Component {
           </CardActions>
         </Card>
         <Card className='container'>
-        <CardText className="login-action-container">
-          <h1>{this.state.seed}</h1>
-        </CardText>
-        <CardActions className="action-container">
-          <RaisedButton 
-            label="Seed People"
-            primary={true}
-            className='login-button'
-            onClick={() => this.seedDatabase()}
-          />
-        </CardActions>
-      </Card>
+          <CardText className="login-action-container">
+            <h1>{this.state.seed}</h1>
+          </CardText>
+          <CardActions className="action-container">
+            <RaisedButton
+              label="Seed People"
+              primary={true}
+              className='login-button'
+              onClick={() => this.seedDatabase()}
+            />
+          </CardActions>
+        </Card>
+        <Card className='container'>
+          <CardText className="login-action-container">
+            <h1>{this.state.kiddos}</h1>
+          </CardText>
+          <CardActions className="action-container">
+            <RaisedButton
+              label="Add Kiddos"
+              primary={true}
+              className='login-button'
+              onClick={() => this.addKiddos()}
+            />
+          </CardActions>
+        </Card>
       </div>
     )
   }
