@@ -7,7 +7,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 
 import Lists from './pages/Lists';
 import Login from './pages/Login';
-import Match from './pages/Match';
+//import Match from './pages/Match';
 import Header from './layout/Header';
 import NotFound from './pages/NotFound';
 import ForgotPassword from './pages/ForgotPassword';
@@ -213,7 +213,7 @@ class App extends Component {
             />
             {
               //Keep this commented out unless you need to match people again
-            <PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/>
+            //<PropsRoute path="/match" component={Match} people={this.state.people} saveMatches={this.saveMatches}/>
             }
             <Route component={ NotFound }/>
           </Switch>
