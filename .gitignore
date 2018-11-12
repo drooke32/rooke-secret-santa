@@ -6,6 +6,10 @@
 # creds
 /src/helpers/base.js
 
+# IDE
+.idea
+src/.idea
+
 # testing
 /coverage
 
