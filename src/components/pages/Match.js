@@ -149,19 +149,6 @@ class Match extends React.Component {
       <div>
         <Card className='container'>
           <CardText className="login-action-container">
-            <h1>{this.state.match}</h1>
-          </CardText>
-          <CardActions className="action-container">
-            <RaisedButton 
-              label="Match People"
-              primary={true}
-              className='login-button'
-              onClick={() => this.matchPeople()}
-            />
-          </CardActions>
-        </Card>
-        <Card className='container'>
-          <CardText className="login-action-container">
             <h1>{this.state.seed}</h1>
           </CardText>
           <CardActions className="action-container">
@@ -170,6 +157,19 @@ class Match extends React.Component {
               primary={true}
               className='login-button'
               onClick={() => this.seedDatabase()}
+            />
+          </CardActions>
+        </Card>
+        <Card className='container'>
+          <CardText className="login-action-container">
+            <h1>{this.state.match}</h1>
+          </CardText>
+          <CardActions className="action-container">
+            <RaisedButton
+              label="Match People"
+              primary={true}
+              className='login-button'
+              onClick={() => this.matchPeople()}
             />
           </CardActions>
         </Card>
